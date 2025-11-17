@@ -1,0 +1,105 @@
+{
+    "email": "mentola5@gmail.com",
+    "password": "tola@2004",
+    "full_name": "Men Tola",
+    "username": "mentola5",
+    "role": "job_seeker"
+}
+{
+    "email": "mentola6@gmail.com",
+    "password": "tola@2004",
+    "full_name": "MEN Tola",
+    "username": "mentola6",
+    "role": "job_seeker"
+}
+{
+    "email": "mentola7@gmail.com",
+    "password": "tola@2004",
+    "full_name": "MEN Tola",
+    "username": "mentola7",
+    "role": "employer"
+}
+{
+    "email": "mentola8@gmail.com",
+    "password": "tola@2004",
+    "full_name": "MEN Tola",
+    "role": "employer",
+    "phone": "0887582219",
+    "company_name": "Mew",
+    "industry": "Manufacturing",
+    "company_size": "11-50",
+    "username": "mentola8"
+}
+{
+    "email": "mentola9@gmail.com",
+    "password": "tola@2004",
+    "full_name": "Franco Tola",
+    "role": "job_seeker",
+    "phone": "099999999",
+    "location": "cambodia",
+    "username": "mentola9"
+}
+{
+    "email": "babydog@gmail.com",
+    "password": "tola@2004",
+    "full_name": "Baby Dog",
+    "role": "job_seeker",
+    "phone": "088888888",
+    "location": "indonesia",
+    "username": "babydog"
+}
+{
+    "email": "babycat@gmail.com",
+    "password": "tola@2004",
+    "full_name": "Baby Cat",
+    "role": "employer",
+    "phone": "07777777",
+    "company_name": "Babay Cate",
+    "industry": "Healthcare",
+    "company_size": "51-200",
+    "username": "babycat"
+}
+{
+    "email": "babyfish@gmail.com",
+    "password": "tola@2004",
+    "full_name": "Baby Fish",
+    "role": "job_seeker",
+    "phone": "0987654321",
+    "location": "singapore",
+    "username": "babyfish"
+}
+{
+    "email": "babyfan@gmail.com",
+    "password": "tola@2004",
+    "full_name": "Baby Fan",
+    "role": "employer",
+    "phone": "0896745231",
+    "company_name": "Power King",
+    "industry": "Education",
+    "company_size": "200+",
+    "username": "babyfan"
+}
+{
+    "email": "phone@gmail.com",
+    "full_name": "Men",
+    "password": "tola@2004",
+    "phone": "055555555",
+    "role": "job_seeker",
+    "username": "Tola"
+}
+{
+    "email": "computer@gmail.com",
+    "full_name": "Men Tola",
+    "password": "tola@2004",
+    "phone": "066666666",
+    "role": "job_seeker",
+    "username": "tola01"
+}
+{
+    "email": "hehe@gmail.com",
+    "full_name": "Hehe",
+    "password": "tola@2004",
+    "phone": "099999999",
+    "role": "job_seeker",
+    "username": "hah"
+}
