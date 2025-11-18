@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Avatar Debug Tool</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        max-width: 900px;
+        margin: 50px auto;
+        padding: 20px;
+        background: #f5f5f5;
+      }
+      .container {
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        color: #333;
+        border-bottom: 3px solid #4caf50;
+        padding-bottom: 10px;
+      }
+      h2 {
+        color: #555;
+        margin-top: 30px;
+      }
+      .section {
+        margin: 20px 0;
+        padding: 15px;
+        background: #f9f9f9;
+        border-left: 4px solid #2196f3;
+        border-radius: 4px;
+      }
+      button {
+        background: #4caf50;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        margin: 5px;
+        transition: background 0.3s;
+      }
+      button:hover {
+        background: #45a049;
+      }
+      button.danger {
+        background: #f44336;
+      }
+      button.danger:hover {
+        background: #da190b;
+      }
+      button.info {
+        background: #2196f3;
+      }
+      button.info:hover {
+        background: #0b7dda;
+      }
+      #output {
+        background: #1e1e1e;
+        color: #d4d4d4;
+        padding: 20px;
+        border-radius: 5px;
+        margin-top: 20px;
+        font-family: "Courier New", monospace;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        max-height: 400px;
+        overflow-y: auto;
+      }
+      .status {
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 3px;
+        margin-left: 10px;
+        font-weight: bold;
+      }
+      .status.good {
+        background: #4caf50;
+        color: white;
+      }
+      .status.bad {
+        background: #f44336;
+        color: white;
+      }
+      .status.warning {
+        background: #ff9800;
+        color: white;
+      }
+      .avatar-preview {
+        max-width: 100px;
+        max-height: 100px;
+        border-radius: 50%;
+        border: 3px solid #ddd;
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>🔍 Avatar Debug Tool</h1>
+      <p>
+        Use this tool to check localStorage avatar data and test the avatar
+        system.
+      </p>
+
+      <div class="section">
+        <h2>📊 Quick Check</h2>
+        <button onclick="checkAll()">Check All Data</button>
+        <button class="info" onclick="clearOutput()">Clear Output</button>
+      </div>
+
+      <div class="section">
+        <h2>🔐 Authentication</h2>
+        <button onclick="checkAuth()">Check Auth Status</button>
+        <button onclick="checkUser()">Check User Data</button>
+        <button onclick="checkToken()">Check Token</button>
+      </div>
+
+      <div class="section">
+        <h2>🖼️ Avatar Data</h2>
+        <button onclick="checkAdminAvatar()">Admin Avatar</button>
+        <button onclick="checkEmployerAvatar()">Employer Avatar</button>
+        <button onclick="checkSeekerAvatar()">Seeker Avatar</button>
+        <button onclick="checkAllAvatars()">All Avatars</button>
+      </div>
+
+      <div class="section">
+        <h2>🧹 Clear Data</h2>
+        <button class="danger" onclick="clearAuth()">Clear Auth</button>
+        <button class="danger" onclick="clearAvatars()">Clear Avatars</button>
+        <button class="danger" onclick="clearAll()">Clear Everything</button>
+      </div>
+
+      <div class="section">
+        <h2>🔔 Test Events</h2>
+        <button class="info" onclick="dispatchEmployerEvent()">
+          Dispatch Employer Event
+        </button>
+        <button class="info" onclick="dispatchAdminEvent()">
+          Dispatch Admin Event
+        </button>
+        <button class="info" onclick="dispatchRefreshEvent()">
+          Dispatch Refresh Event
+        </button>
+      </div>
+
+      <div id="output"></div>
+    </div>
+
+    <script>
+      const output = document.getElementById("output");
+
+      function log(message, color = "#4CAF50") {
+        const timestamp = new Date().toLocaleTimeString();
+        output.innerHTML += `<span style="color: ${color}">[${timestamp}] ${message}</span>\n`;
+        output.scrollTop = output.scrollHeight;
+      }
+
+      function clearOutput() {
+        output.innerHTML = "";
+      }
+
+      function checkAll() {
+        clearOutput();
+        log("=== FULL SYSTEM CHECK ===", "#2196F3");
+        checkAuth();
+        checkUser();
+        checkAllAvatars();
+        log("=== CHECK COMPLETE ===", "#2196F3");
+      }
+
+      function checkAuth() {
+        const token = localStorage.getItem("authToken");
+        const status = token ? "LOGGED IN" : "LOGGED OUT";
+        const color = token ? "#4CAF50" : "#f44336";
+        log(`Auth Status: ${status}`, color);
+        if (token) {
+          log(`Token Preview: ${token.substring(0, 50)}...`, "#888");
+        }
+      }
+
+      function checkUser() {
+        const userRaw = localStorage.getItem("user");
+        if (!userRaw) {
+          log("❌ No user data found", "#f44336");
+          return;
+        }
+        try {
+          const user = JSON.parse(userRaw);
+          log("✅ User Data:", "#4CAF50");
+          log(
+            JSON.stringify(
+              {
+                id: user.id,
+                email: user.email,
+                role: user.role,
+                full_name: user.full_name,
+                hasAvatar: !!user.avatar,
+                avatarType: user.avatar?.startsWith("data:")
+                  ? "base64"
+                  : "file path",
+              },
+              null,
+              2
+            ),
+            "#d4d4d4"
+          );
+        } catch (e) {
+          log("❌ Error parsing user data: " + e.message, "#f44336");
+        }
+      }
+
+      function checkToken() {
+        const token = localStorage.getItem("authToken");
+        if (token) {
+          log("✅ Token exists", "#4CAF50");
+          log(`Length: ${token.length} characters`, "#888");
+          try {
+            const parts = token.split(".");
+            if (parts.length === 3) {
+              log("Format: JWT (3 parts)", "#4CAF50");
+            } else {
+              const decoded = JSON.parse(atob(token));
+              log("Decoded token:", "#888");
+              log(JSON.stringify(decoded, null, 2), "#d4d4d4");
+            }
+          } catch (e) {
+            log("Could not decode token", "#ff9800");
+          }
+        } else {
+          log("❌ No token found", "#f44336");
+        }
+      }
+
+      function checkAdminAvatar() {
+        checkAvatar("adminAvatar", "Admin");
+      }
+
+      function checkEmployerAvatar() {
+        checkAvatar("employerAvatar", "Employer");
+      }
+
+      function checkSeekerAvatar() {
+        checkAvatar("seekerAvatar", "Job Seeker");
+      }
+
+      function checkAvatar(key, label) {
+        const avatar = localStorage.getItem(key);
+        if (!avatar || avatar === "null") {
+          log(`⚠️ ${label} Avatar: Not set`, "#ff9800");
+          return;
+        }
+
+        log(`✅ ${label} Avatar: Found`, "#4CAF50");
+
+        if (avatar.startsWith("data:image")) {
+          const match = avatar.match(/^data:image\/(.*?);base64,/);
+          const type = match ? match[1] : "unknown";
+          const sizeKB = Math.round((avatar.length * 3) / 4 / 1024);
+          log(`   Type: ${type.toUpperCase()}`, "#888");
+          log(`   Size: ~${sizeKB} KB`, "#888");
+          log(`   Preview: ${avatar.substring(0, 60)}...`, "#888");
+
+          // Try to display image
+          const img = document.createElement("img");
+          img.src = avatar;
+          img.className = "avatar-preview";
+          img.alt = label + " Avatar";
+          output.appendChild(img);
+          output.appendChild(document.createElement("br"));
+        } else {
+          log(`   Type: File Path`, "#888");
+          log(`   Path: ${avatar}`, "#888");
+        }
+      }
+
+      function checkAllAvatars() {
+        log("--- Avatar Check ---", "#2196F3");
+        checkAdminAvatar();
+        checkEmployerAvatar();
+        checkSeekerAvatar();
+        log("--- End Avatar Check ---", "#2196F3");
+      }
+
+      function clearAuth() {
+        localStorage.removeItem("authToken");
+        localStorage.removeItem("user");
+        log("🧹 Cleared auth data", "#ff9800");
+      }
+
+      function clearAvatars() {
+        localStorage.removeItem("adminAvatar");
+        localStorage.removeItem("employerAvatar");
+        localStorage.removeItem("seekerAvatar");
+        log("🧹 Cleared all avatars", "#ff9800");
+      }
+
+      function clearAll() {
+        if (confirm("Are you sure you want to clear ALL localStorage data?")) {
+          localStorage.clear();
+          log("🧹 Cleared everything!", "#f44336");
+        }
+      }
+
+      function dispatchEmployerEvent() {
+        window.dispatchEvent(new CustomEvent("employerAvatarChanged"));
+        log("🔔 Dispatched employerAvatarChanged event", "#2196F3");
+      }
+
+      function dispatchAdminEvent() {
+        window.dispatchEvent(new CustomEvent("adminAvatarChanged"));
+        log("🔔 Dispatched adminAvatarChanged event", "#2196F3");
+      }
+
+      function dispatchRefreshEvent() {
+        window.dispatchEvent(new CustomEvent("userDataRefresh"));
+        log("🔔 Dispatched userDataRefresh event", "#2196F3");
+      }
+
+      // Auto-check on load
+      window.addEventListener("load", () => {
+        log("🚀 Avatar Debug Tool Ready", "#4CAF50");
+        log('Click "Check All Data" to start diagnosis', "#888");
+      });
+
+      // Listen for storage changes
+      window.addEventListener("storage", (e) => {
+        if (
+          e.key &&
+          (e.key.includes("Avatar") ||
+            e.key === "user" ||
+            e.key === "authToken")
+        ) {
+          log(`📝 Storage changed: ${e.key}`, "#2196F3");
+        }
+      });
+
+      // Listen for custom events
+      [
+        "employerAvatarChanged",
+        "adminAvatarChanged",
+        "seekerAvatarChanged",
+        "userDataRefresh",
+      ].forEach((eventName) => {
+        window.addEventListener(eventName, () => {
+          log(`🔔 Event received: ${eventName}`, "#9C27B0");
+        });
+      });
+    </script>
+  </body>
+</html>

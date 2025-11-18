@@ -1,0 +1,40 @@
+{
+  "short_name": "Job Portal",
+  "name": "Job Portal - Find Your Dream Job",
+  "icons": [
+    {
+      "src": "Job Portal-16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    },
+    {
+      "src": "Job Portal-24.png",
+      "sizes": "24x24",
+      "type": "image/png"
+    },
+    {
+      "src": "Job Portal-32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "Job Portal-64.png",
+      "sizes": "64x64",
+      "type": "image/png"
+    },
+    {
+      "src": "Job Portal-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "Job Portal-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#2575fc",
+  "background_color": "#ffffff"
+}
